@@ -113,13 +113,13 @@ public class LocalDB {
     // to record the  game
     public static void fillMap(LinkedHashMap<Integer, String> moves, JButton [] arr)
     {
-         for(int x = 0; x <arr.length; x++)
+         for(int x = 1; x <=arr.length; x++)
         {
-           String empty = arr[x].getText();
-            System.out.println(x+" "+arr[x].getText());
+           String empty = arr[x-1].getText();
+            System.out.println(x+" "+arr[x-1].getText());
             if(empty.equalsIgnoreCase(""))
             {
-                 moves.put(x, arr[x].getText());
+                 moves.put(x, arr[x-1].getText());
             }
         }
     

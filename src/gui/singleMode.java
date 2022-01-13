@@ -170,8 +170,8 @@ public class singleMode extends javax.swing.JFrame {
 
         twoplayer_mode = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        jLabel23 = new javax.swing.JLabel();
-        jLabel25 = new javax.swing.JLabel();
+        player1 = new javax.swing.JLabel();
+        player2 = new javax.swing.JLabel();
         playerX = new javax.swing.JLabel();
         playerO = new javax.swing.JLabel();
         btnExit = new javax.swing.JButton();
@@ -198,13 +198,13 @@ public class singleMode extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(230, 76, 60));
 
-        jLabel23.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel23.setForeground(new java.awt.Color(48, 57, 82));
-        jLabel23.setText("Player   X");
+        player1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        player1.setForeground(new java.awt.Color(48, 57, 82));
+        player1.setText("Player   X");
 
-        jLabel25.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel25.setForeground(new java.awt.Color(48, 57, 82));
-        jLabel25.setText("Player O");
+        player2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        player2.setForeground(new java.awt.Color(48, 57, 82));
+        player2.setText("Player O");
 
         playerX.setFont(new java.awt.Font("Tempus Sans ITC", 1, 18)); // NOI18N
         playerX.setOpaque(true);
@@ -275,11 +275,11 @@ public class singleMode extends javax.swing.JFrame {
                 .addGap(75, 75, 75)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(playerO, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel25))
+                    .addComponent(player2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(playerX, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(player1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(62, 62, 62))
         );
         jPanel2Layout.setVerticalGroup(
@@ -290,11 +290,11 @@ public class singleMode extends javax.swing.JFrame {
                 .addGap(37, 37, 37)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel23)
+                        .addComponent(player1)
                         .addGap(18, 18, 18)
                         .addComponent(playerX, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel25)
+                        .addComponent(player2)
                         .addGap(18, 18, 18)
                         .addComponent(playerO, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(72, 72, 72)
@@ -649,10 +649,10 @@ public class singleMode extends javax.swing.JFrame {
     private javax.swing.JButton btnReset;
     private javax.swing.JButton histbtn;
     private javax.swing.JLabel jLabel21;
-    private javax.swing.JLabel jLabel23;
-    private javax.swing.JLabel jLabel25;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel player1;
+    private javax.swing.JLabel player2;
     private javax.swing.JLabel playerO;
     private javax.swing.JLabel playerX;
     private javax.swing.JButton recbtn;

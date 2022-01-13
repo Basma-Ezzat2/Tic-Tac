@@ -58,7 +58,7 @@ public class showRecord extends javax.swing.JFrame {
                 FilePlayerScore1 = line[2];
                 FilePlayerName2 = line[3];
                 FilePlayerScore2 = line[4];
-                System.out.println("result in line 5"+line[5]);
+                System.out.println("result in line "+splitline[x]+ "/n");
                 FileWinner = line[5];
                 lb_date.setText(FilegameDate);
                 lb_player1.setText(FilePlayerName1);
@@ -85,8 +85,8 @@ public class showRecord extends javax.swing.JFrame {
                 for (int key:moves.keySet())
                 {
                     try {
-                        System.out.print(key+" string in button::  "+moves.get(key)+"\n");
-                        btn[key].setText(moves.get(key));
+                        System.out.print(key+" string in button::  "+moves.get(key-1)+"\n");
+                        btn[key-1].setText(moves.get(key));
                         Thread.sleep(1000);
                         
                     } catch (InterruptedException ex) {

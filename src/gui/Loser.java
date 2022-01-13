@@ -24,6 +24,7 @@ private final JFXPanel jfxPanel= new JFXPanel();
     /**
      * Creates new form Loser
      */
+     MediaPlayer oracleVid;
     public Loser() {
         initComponents();
          createScene();
@@ -41,7 +42,7 @@ private final JFXPanel jfxPanel= new JFXPanel();
         Platform.runLater(new Runnable(){
             public void run (){
                 File file=new File("loser.mp4");
-                MediaPlayer oracleVid =new MediaPlayer(new Media(file.toURI().toString()));
+                oracleVid =new MediaPlayer(new Media(file.toURI().toString()));
                 
                 jfxPanel.setScene(new Scene (new Group(new MediaView(oracleVid))));
                 oracleVid.setVolume(0.7);
@@ -70,6 +71,11 @@ private final JFXPanel jfxPanel= new JFXPanel();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         loser_video.setBackground(new java.awt.Color(48, 57, 82));
         loser_video.setPreferredSize(new java.awt.Dimension(762, 496));
@@ -157,6 +163,10 @@ private final JFXPanel jfxPanel= new JFXPanel();
     private void jButton19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton19ActionPerformed
        createScene();
     }//GEN-LAST:event_jButton19ActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        oracleVid.stop();
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments

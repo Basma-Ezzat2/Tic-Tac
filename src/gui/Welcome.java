@@ -219,7 +219,7 @@ public class Welcome extends javax.swing.JFrame {
             System.out.print("hi");
             
           if(res.next()){
-            JOptionPane.showMessageDialog(null, "user logged in succesfully");
+            JOptionPane.showMessageDialog(null, " Logged in Succesfully");
             Modes M1= new Modes() ;
            M1.setVisible(true);
            M1.setLocationRelativeTo(null);
@@ -227,14 +227,14 @@ public class Welcome extends javax.swing.JFrame {
             setVisible(false);
           }else
           {
-              JOptionPane.showMessageDialog(null,"Don't Found !");
+              JOptionPane.showMessageDialog(null,"Not Found !!");
           }                    
             con.close();
         } catch (Exception e1) {
             //e1.printStackTrace();
             //JOptionPane.showMessageDialog(null,"database error !!");
             if(usernamTextField.getText().equals("")|| passwordField.getText().equals(""))
-          {JOptionPane.showMessageDialog(null,"Data Missing !!");}
+          {JOptionPane.showMessageDialog(null,"Missing Data!!");}
         }
         
 

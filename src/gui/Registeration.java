@@ -296,15 +296,15 @@ public class Registeration extends javax.swing.JFrame {
             stmt.setString(3, passwordField.getText());
             //ResultSet res = stmt.executeQuery();
             if(nameTextField.getText().equals("")|| usernamTextField.getText().equals("")|| passwordField.getText().equals("")|| confirmpasswordField.getText().equals("")){
-                    JOptionPane.showMessageDialog(null, "Data Missing"); 
+                    JOptionPane.showMessageDialog(null, "Missing Data!"); 
             }else if(!confirm.equals(pass))
                     {
-                        JOptionPane.showMessageDialog(null, "No Match Password");
+                        JOptionPane.showMessageDialog(null, "No Match Password?");
                     }
             else{
                 try {
                     stmt.executeUpdate();
-                    JOptionPane.showMessageDialog(this, "Registered succesfully");
+                    JOptionPane.showMessageDialog(this, "Registered Succesfully");
                Modes m= new Modes();
                        m.setVisible(true);        
                 m.setLocationRelativeTo(null);

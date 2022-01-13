@@ -118,7 +118,12 @@ public class twoPlayersMode extends javax.swing.JFrame {
             {
                 closeButtons();
                 JOptionPane.showMessageDialog(this, "the game is draw try again ");
+                Fair fair=new Fair();
+               fair.setVisible(true);
+               fair.setDefaultCloseOperation(2);
+                
             }
+            
         }
         
     }
@@ -137,7 +142,7 @@ public class twoPlayersMode extends javax.swing.JFrame {
             
             JOptionPane.showMessageDialog (this,"Player X wins","Tic tac toe",JOptionPane.OK_OPTION);
               xCount++;
-              winner =player2.getText();
+              winner =player1.getText();
               gameScore();
               closeButtons();
               Winner wins=new Winner();
@@ -170,7 +175,7 @@ public class twoPlayersMode extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this,"Player X wins","Tic tac toe",JOptionPane.YES_OPTION);
               
               xCount++;
-              winner =player2.getText();
+              winner =player1.getText();
               gameScore();
               closeButtons();
                 cx = false;
@@ -202,7 +207,7 @@ public class twoPlayersMode extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this,"Player X wins","Tic Tac Toe",JOptionPane.OK_OPTION);
               
               xCount++;
-              winner =player2.getText();
+              winner =player1.getText();
               gameScore();
               closeButtons();
                 cx = false;
@@ -241,7 +246,7 @@ public class twoPlayersMode extends javax.swing.JFrame {
               gameScore();
               closeButtons();
                 co = false;
-                winner = player1.getText();
+                winner = player2.getText();
                 Loser lose=new Loser();
                 lose.setVisible(true);
                lose.setDefaultCloseOperation(2);
@@ -272,7 +277,7 @@ public class twoPlayersMode extends javax.swing.JFrame {
               gameScore();
               closeButtons();
                 co = false;
-                winner = player1.getText();
+                winner = player2.getText();
                Loser lose=new Loser();
                 lose.setVisible(true);
                lose.setDefaultCloseOperation(2);
@@ -307,7 +312,7 @@ public class twoPlayersMode extends javax.swing.JFrame {
               gameScore();
               closeButtons();
                 co = false;
-                winner = player1.getText();
+                winner = player2.getText();
                 Loser lose=new Loser();
                 lose.setVisible(true);
                lose.setDefaultCloseOperation(2);
@@ -347,8 +352,8 @@ public class twoPlayersMode extends javax.swing.JFrame {
 
         twoplayer_mode = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        player2 = new javax.swing.JLabel();
         player1 = new javax.swing.JLabel();
+        player2 = new javax.swing.JLabel();
         playerX = new javax.swing.JLabel();
         playerO = new javax.swing.JLabel();
         btnExit = new javax.swing.JButton();
@@ -375,13 +380,13 @@ public class twoPlayersMode extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(230, 76, 60));
 
-        player2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        player2.setForeground(new java.awt.Color(48, 57, 82));
-        player2.setText("Player  X");
-
         player1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         player1.setForeground(new java.awt.Color(48, 57, 82));
-        player1.setText("Player O");
+        player1.setText("Player  X");
+
+        player2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        player2.setForeground(new java.awt.Color(48, 57, 82));
+        player2.setText("Player O");
 
         playerX.setFont(new java.awt.Font("Tempus Sans ITC", 1, 18)); // NOI18N
         playerX.setOpaque(true);
@@ -444,10 +449,10 @@ public class twoPlayersMode extends javax.swing.JFrame {
                         .addContainerGap()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(playerO, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(player1, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(player2, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(79, 79, 79)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(player2, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(player1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(playerX, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(54, 54, 54)))
                 .addContainerGap())
@@ -467,11 +472,11 @@ public class twoPlayersMode extends javax.swing.JFrame {
                 .addGap(33, 33, 33)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(player2)
+                        .addComponent(player1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(playerX, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(player1)
+                        .addComponent(player2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(playerO, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(83, 83, 83)
