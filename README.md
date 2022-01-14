@@ -1,3 +1,5 @@
+![](Images/512x512bbb.jpg)
+<img src="Images/512x512bbb.jpg" width="100">
 # Tic-Tac-Game
 * Tic-Tac-Toe game using Javaswing.
 * The user can register and login to the server.
