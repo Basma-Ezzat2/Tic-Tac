@@ -38,7 +38,7 @@
 
 
 
-## Teams Members:
+## Team Members:
 * Enas Alosta
 * Alaa Fayed
 * Basma Ezzat
