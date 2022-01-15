@@ -207,7 +207,7 @@ public class Welcome extends javax.swing.JFrame {
     }//GEN-LAST:event_usernamTextFieldActionPerformed
 
     private void loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginActionPerformed
-        System.out.print("hi");
+        
         try {
             Class.forName("com.mysql.jdbc.Driver");
             java.sql.Connection con = java.sql.DriverManager.getConnection("jdbc:mysql://localhost:3306/tic_tac" , "root" , "");
@@ -216,7 +216,7 @@ public class Welcome extends javax.swing.JFrame {
 
            ResultSet res = stmt.executeQuery("SELECT * FROM `users` WHERE `username` = '"+usernamTextField.getText()+"' AND `password` = '"+passwordField.getText()+"'");
             
-            System.out.print("hi");
+            
             
           if(res.next()){
             JOptionPane.showMessageDialog(null, " Logged in Succesfully");
@@ -295,6 +295,6 @@ public class Welcome extends javax.swing.JFrame {
     private javax.swing.JButton login;
     private javax.swing.JPasswordField passwordField;
     private javax.swing.JButton register;
-    private javax.swing.JTextField usernamTextField;
+    public static javax.swing.JTextField usernamTextField;
     // End of variables declaration//GEN-END:variables
 }

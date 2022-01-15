@@ -5,7 +5,22 @@
  */
 package gui;
 
+import static gui.LocalDB.readLocalFile;
+import static gui.twoPlayersMode.dataLocl;
+import static gui.twoPlayersMode.localFile;
+import static gui.twoPlayersMode.pGames;
+import static gui.twoPlayersMode.pLose;
+import static gui.twoPlayersMode.pWins;
+import java.awt.Color;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.net.Socket;
+import java.util.LinkedHashMap;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
@@ -14,149 +29,362 @@ import javax.swing.JOptionPane;
  * @author user
  */
 public class singleMode extends javax.swing.JFrame {
-    int turno =1;
-    JButton list [] = new JButton [9];
-    /**
-     * Creates new form singleMode
-     */
+   public static File localFile;
+    public static  String dataLocl;
+    static Socket socket;
+    static DataInputStream dataInputStream;
+    static DataOutputStream dataOutputStream;
+    
+    String flag = "X"; //string to swap between x , o
+    int xCounter = 0;  // int value to count the number of winning game to player x
+    int oCounter =0;   //int value to count the number of winning game to player o
+    int draw =0;
+    static int drawCount=0;
+    boolean cx = false;
+    boolean co = false;
+    String playerX00;
+    String playerY00;
+    String winner ="";
+    boolean record = false;
+    Boolean success=false;
+    boolean end=false;
+    String playerName;
+    String playerEmail;
+    String playingMode="";
+    int computerco=0;
+    int playerGames ;
+    int playerWins;
+    int playerLoses;
+    String secPlayer;
+    LinkedHashMap<Integer, String> moves = new LinkedHashMap<>();
+    JButton [] arr = new JButton[9];
     public singleMode() {
         initComponents();
-          list[0] = (btn1);
-        list[1] = (btn2);
-        list[2] = (btn3);
-        list[3] = (btn4);
-        list[4] = (btn5);
-        list[5] = (btn6);
-        list[6] = (btn7);
-        list[7] = (btn8);
-        list[8] = (btn9); 
-  Computer(); 
-    }
-  
-  
-    public void winner (){
+        playerX00=firstPlayer.getText();
+        playerY00=secondPlayer.getText();
+        setResizable(true);
+        //setSize(1200, 800);
+        arr[0] = btn1;
+        arr[1] = btn2;
+        arr[2] = btn3;
+        arr[3] = btn4;
+        arr[4] = btn5;
+        arr[5] = btn6;
+        arr[6] = btn7;
+        arr[7] = btn8;
+        arr[8] = btn9;
         
-    analysis(btn1,btn2,btn3);
-    analysis(btn4,btn5,btn6);
-    analysis(btn7,btn8,btn9);
-    analysis(btn1,btn4,btn7);
-    analysis(btn2,btn5,btn8);
-    analysis(btn3,btn6,btn9);
-    analysis(btn1,btn5,btn9);
-    analysis(btn3,btn5,btn7);
-    
-    }
-    public void analysis(JButton B1, JButton B2, JButton B3){
-        if (B1.getText() ==  "X" && B2.getText() == "X" && B3.getText() == "X") {
-         JOptionPane.showMessageDialog(null,"computer wins");
-         newGame();
-        } else if (B1.getText() == "O" && B2.getText() == "O" && B3.getText() == "O") {
-            JOptionPane.showMessageDialog(null,"User Wins");
-            newGame();
-        }
-    }
-    
-    public void Computer() {
-        if (turno == 1) {
-            cpu (btn1, btn2, btn3);    
-        }
-         if (turno == 1) {
-            cpu (btn4, btn5, btn6);    
-        }
-          if (turno ==1) {
-            cpu (btn7, btn8, btn9);    
-        }
-         if (turno ==1) {
-            cpu (btn1, btn4, btn7);
-            
-        }
-          if (turno ==1) {
-            cpu (btn2, btn5, btn8);    
-        }
-          if (turno ==1) {
-            cpu (btn3, btn6, btn9);    
-        }
-          
-          if (turno ==1) {
-            cpu (btn1, btn5, btn9);    
-        }
         
-         if (turno ==1) {
-            cpu (btn3, btn5, btn7);    
+        
+        for(int x = 0; x <9; x++ )
+        {
+            arr[x].setText("");
         }
-          if (turno ==1) {
-            Random rand = new Random();
-            int AI;
-            boolean A = true;
-          
+              try {
             
-            do {
-                AI= (int) (rand.nextDouble() * 9 + 1);
-                if (list[AI -1].getText() == "") {
-                    list[AI -1].setText("X");
-                    A = false;
-                }
+            localFile = new File("local.txt");
+            if(localFile.createNewFile())
+            {
+                System.out.println("file created "+ localFile.getName()+ localFile.getPath());
+            }
+            else
+            {
+                System.out.println("the file is already existed");
+            }
+            
+            System.out.println("length: "+ localFile.length());
+            } catch (IOException ex) {
+            Logger.getLogger(LocalDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+              secondPlayer.setText("Computer");
+    }
+    // method to reset the score of two players
+    public void gameScore()
+    {
+        playerX.setText(""+xCounter);
+        playerO.setText(""+oCounter);
+        
+    }// end method gameScore 
+    public void recordGame()
+    {
+           
+            System.out.println("inside");
+            LocalDB.fillMap(moves, arr);
+           recbtn.setText("record game");
+           recbtn.setBackground(Color.LIGHT_GRAY);
+            record = false;
+            dataLocl = LocalDB.readLocalFile(localFile);
+            System.out.println(dataLocl+"the line inside recordGame");
+        
+        
+    }
+    public boolean isDraw()
+    {
+        if(drawCount<8)
+        {
+            drawCount++;
+            System.out.print(""+drawCount);
+            return false;
+        }else
+        {
+            System.out.println(""+cx+""+co);
+            if(cx&&co)
+            {
+                closeButtons();
+                JOptionPane.showMessageDialog(this, "The game is draw try again ");
+                if(record)
+                {
                     
-                boards();
-            } while(A);
-          }
-          winner();
+                    recordGame();
+                    LocalDB.writeLocalGameSteps(localFile, dataLocl ,playerX00, xCounter, playerY00, oCounter, moves, winner);
+                    
+                }
+                return true;
+            }
+        }
+        return false;
+        
     }
-    
-    public void cpu(JButton B1, JButton B2, JButton B3) {
-      if(B1.getText() =="O" && B2.getText() == "O" && B3.getText() == ""){
-       B3.setText("X");
-       turno =2; 
-      } else if (B1.getText() =="O" && B2.getText() == "" && B3.getText() == "O"){
-       B2.setText("X");
-       turno =2; 
-      } else if(B1.getText() =="" && B2.getText() == "O" && B3.getText() == "O"){
-       B1.setText("X");
-       turno =2; 
-      }
-       if(B1.getText() =="X" && B2.getText() == "X" && B3.getText() == ""){
-       B3.setText("X");
-       turno =2; 
-      } else if (B1.getText() =="X" && B2.getText() == "" && B3.getText() == "X"){
-       B2.setText("X");
-       turno =2; 
-      } else if(B1.getText() =="" && B2.getText() == "X" && B3.getText() == "X"){
-       B1.setText("X");
-       turno =2; 
-      }
+    public  boolean isDrawComputer()
+    {
+        if(drawCount<4)
+        {
+            drawCount++;
+            System.out.print(""+drawCount);
+            return false;
+        } if(cx&&co)
+            {
+                closeButtons();
+                JOptionPane.showMessageDialog(this, "The game is draw try again ");
+                if(record)
+                {
+                    
+                    recordGame();
+                    LocalDB.writeLocalGameSteps(localFile, dataLocl ,playerX00, xCounter, playerY00, oCounter, moves, winner);
+                    
+                }
+                return true;
+            }
+        return false;
+        
     }
+  
     
     
-    public void boards() {
-    String one = btn1.getText();
-    String two = btn2.getText();
-    String three = btn3.getText();
-    String four = btn4.getText();
-    String five = btn5.getText();
-    String six= btn6.getText();
-    String seven= btn7.getText();
-    String eight = btn8.getText();
-    String nine = btn9.getText(); 
-    
-    if (one!="" && two!="" && three!="" && four!="" && five!="" && six!="" && seven!="" && eight!="" && nine!=""){
-     JOptionPane.showMessageDialog(null, "the challenge starts on time");
-     newGame();
-    }    
+     public void choose_player()
+    {
+        
+        playerX00 = firstPlayer.getText();
+        playerY00 = secondPlayer.getText();
+        System.out.println("\n first "+playerX00+"  "+playerY00);
+        if(flag.equalsIgnoreCase("X"))
+        {
+            flag = "O";
+           // jLabel46.setText(" O turn");
+        }else
+        {
+            flag = "X";
+            //jLabel46.setText(" X turn");
+        }
             
-    }
-    public void newGame() {
-    btn1.setText("");
-    btn2.setText("");
-    btn3.setText("");
-    btn4.setText("");
-    btn5.setText("");
-    btn6.setText("");
-    btn7.setText("");
-    btn8.setText("");
-    btn9.setText("");
-          
-          
-     
+        
+    }// end choose_player
+      public boolean xWin()
+    {
+        for(int x =0, r1=0, r2=1 ,r3=2; x <3; x++, r1=r1+3, r2=r2+3, r3=r3+3)
+        {
+            String b1 = arr[r1].getText();
+            String b2 = arr[r2].getText();
+            String b3 = arr[r3].getText();
+            if(b1.equalsIgnoreCase("X") && b2.equalsIgnoreCase("X") && b3.equalsIgnoreCase("X"))
+            {
+                arr[r1].setBackground(Color.green);
+                arr[r2].setBackground(Color.green);
+                arr[r3].setBackground(Color.green);
+                JOptionPane.showMessageDialog(this, "You Win the Game ");
+                xCounter++;
+                winner =firstPlayer.getText();
+                gameScore();
+                closeButtons();
+                cx = false;
+                Winner wins=new Winner();
+               wins.setVisible(true);
+                wins.setDefaultCloseOperation(2);
+                if(record)
+                {
+                    
+                    recordGame();
+                    LocalDB.writeLocalGameSteps(localFile, dataLocl ,playerX00, xCounter, playerY00, oCounter, moves, winner);
+                    
+                }
+                return true;
+                
+            }// end if
+            
+        }//end for loop to check win in rows
+        for(int x =0, c1=0, c2=3 ,c3=6; x <3; x++, c1++, c2++, c3++)
+        {
+            String b1 = arr[c1].getText();
+            String b2 = arr[c2].getText();
+            String b3 = arr[c3].getText();
+            if(b1.equalsIgnoreCase("X") && b2.equalsIgnoreCase("X") && b3.equalsIgnoreCase("X"))
+            {
+                arr[c1].setBackground(Color.green);
+                arr[c2].setBackground(Color.green);
+                arr[c3].setBackground(Color.green);
+                JOptionPane.showMessageDialog(this, "You Win the Game ");
+                xCounter++;
+                gameScore();
+                closeButtons();
+                cx = false;
+                winner =firstPlayer.getText();
+                Winner wins=new Winner();
+               wins.setVisible(true);
+                wins.setDefaultCloseOperation(2);
+                
+                if(record)
+                {
+                    
+                    recordGame();
+                    LocalDB.writeLocalGameSteps(localFile, dataLocl ,playerX00, xCounter, playerY00, oCounter, moves, winner);
+                    
+                }
+                return true;
+            }// end if
+            
+        }//end for loop to check win in columes
+        for(int x =0, d1=0, d2=4 , d3=8  ; x <2; x++ , d1=d1+2, d3=d3-2)
+        {
+            String b1 = arr[d1].getText();
+            String b2 = arr[d2].getText();
+            String b3 = arr[d3].getText();
+            if(b1.equalsIgnoreCase("X") && b2.equalsIgnoreCase("X") && b3.equalsIgnoreCase("X"))
+            {
+                arr[d1].setBackground(Color.green);
+                arr[d2].setBackground(Color.green);
+                arr[d3].setBackground(Color.green);
+                JOptionPane.showMessageDialog(this, "You Win the Game ");
+                xCounter++;
+                gameScore();
+                closeButtons();
+                winner =firstPlayer.getText();
+                cx = false;
+                Winner wins=new Winner();
+               wins.setVisible(true);
+                wins.setDefaultCloseOperation(2);
+                if(record)
+                {
+                    
+                    recordGame();
+                    LocalDB.writeLocalGameSteps(localFile, dataLocl ,playerX00, xCounter, playerY00, oCounter, moves, winner);
+                    
+                }
+              return true;
+            }// end if
+            
+        }//end for loop to check win in diagonal
+        cx = true;
+        return false;
+    }// end xwin method
+    
+    public boolean  oWin()
+    {
+        for (int x = 0, r1 = 0, r2 = 1, r3 = 2; x < 3; x++, r1 = r1 + 3, r2 = r2 + 3, r3 = r3 + 3) {
+            String b1 = arr[r1].getText();
+            String b2 = arr[r2].getText();
+            String b3 = arr[r3].getText();
+            if (b1.equalsIgnoreCase("O") && b2.equalsIgnoreCase("O") && b3.equalsIgnoreCase("O")) {
+                arr[r1].setBackground(Color.green);
+                arr[r2].setBackground(Color.green);
+                arr[r3].setBackground(Color.green);
+                JOptionPane.showMessageDialog(this, "You Lost the Game ");
+                oCounter++;
+                gameScore();
+                closeButtons();
+                co = false;
+                winner =secondPlayer.getText();
+                Loser lose=new Loser();
+                lose.setVisible(true);
+               lose.setDefaultCloseOperation(2);
+                if(record)
+                {
+                    
+                    recordGame();
+                    LocalDB.writeLocalGameSteps(localFile, dataLocl ,playerX00, xCounter, playerY00, oCounter, moves, winner);
+                    
+                }
+                return true;
+                 
+            }// end if
+            
+        }//end for loop to check win in rows
+        for (int x = 0, c1 = 0, c2 = 3, c3 = 6; x < 3; x++, c1++, c2++, c3++) {
+            String b1 = arr[c1].getText();
+            String b2 = arr[c2].getText();
+            String b3 = arr[c3].getText();
+            if (b1.equalsIgnoreCase("O") && b2.equalsIgnoreCase("O") && b3.equalsIgnoreCase("O")) {
+                arr[c1].setBackground(Color.green);
+                arr[c2].setBackground(Color.green);
+                arr[c3].setBackground(Color.green);
+                JOptionPane.showMessageDialog(this, "You Lost the Game ");
+                oCounter++;
+                gameScore();
+                closeButtons();
+                winner =secondPlayer.getText();
+                co = false;
+                Loser lose=new Loser();
+                lose.setVisible(true);
+               lose.setDefaultCloseOperation(2);
+                if(record)
+                {
+                    
+                    recordGame();
+                    LocalDB.writeLocalGameSteps(localFile, dataLocl ,playerX00, xCounter, playerY00, oCounter, moves, winner);
+                    
+                }
+                return true;
+            }// end if
+            
+        }//end for loop to check win in columes
+        for (int x = 0, d1 = 0, d2 = 4, d3 = 8; x < 2; x++, d1 = d1 + 2, d3 = d3 - 2) {
+            String b1 = arr[d1].getText();
+            String b2 = arr[d2].getText();
+            String b3 = arr[d3].getText();
+            if (b1.equalsIgnoreCase("O") && b2.equalsIgnoreCase("O") && b3.equalsIgnoreCase("O")) {
+                arr[d1].setBackground(Color.green);
+                arr[d2].setBackground(Color.green);
+                arr[d3].setBackground(Color.green);
+                JOptionPane.showMessageDialog(this, "You Lost the Game ");
+                oCounter++;
+                gameScore();
+                closeButtons();
+                winner =secondPlayer.getText();
+                co = false;
+                Loser lose=new Loser();
+                lose.setVisible(true);
+               lose.setDefaultCloseOperation(2);
+                if(record)
+                {
+                    
+                    recordGame();
+                    LocalDB.writeLocalGameSteps(localFile, dataLocl ,playerX00, xCounter, playerY00, oCounter, moves, winner);
+                    
+                }
+                return true;
+                
+            }// end if
+           System.out.println();
+        }//end for loop to check win in diagonal
+        co = true;
+     return false;
+    }// end xwin method
+    
+    public void closeButtons()
+    {
+        for(int x = 0; x <9; x++ )
+        {
+            arr[x].setEnabled(false);
+        }
     }
 
     /**
@@ -170,8 +398,8 @@ public class singleMode extends javax.swing.JFrame {
 
         twoplayer_mode = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        player1 = new javax.swing.JLabel();
-        player2 = new javax.swing.JLabel();
+        firstPlayer = new javax.swing.JLabel();
+        secondPlayer = new javax.swing.JLabel();
         playerX = new javax.swing.JLabel();
         playerO = new javax.swing.JLabel();
         btnExit = new javax.swing.JButton();
@@ -189,7 +417,7 @@ public class singleMode extends javax.swing.JFrame {
         btn7 = new javax.swing.JButton();
         btn4 = new javax.swing.JButton();
         jLabel21 = new javax.swing.JLabel();
-        btnHome = new javax.swing.JButton();
+        btnBack = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -198,13 +426,13 @@ public class singleMode extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(230, 76, 60));
 
-        player1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        player1.setForeground(new java.awt.Color(48, 57, 82));
-        player1.setText("Player   X");
+        firstPlayer.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        firstPlayer.setForeground(new java.awt.Color(48, 57, 82));
+        firstPlayer.setText("You");
 
-        player2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        player2.setForeground(new java.awt.Color(48, 57, 82));
-        player2.setText("Player O");
+        secondPlayer.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        secondPlayer.setForeground(new java.awt.Color(48, 57, 82));
+        secondPlayer.setText("Computer");
 
         playerX.setFont(new java.awt.Font("Tempus Sans ITC", 1, 18)); // NOI18N
         playerX.setOpaque(true);
@@ -275,11 +503,11 @@ public class singleMode extends javax.swing.JFrame {
                 .addGap(75, 75, 75)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(playerO, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(player2))
+                    .addComponent(secondPlayer))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(playerX, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(player1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(firstPlayer, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(62, 62, 62))
         );
         jPanel2Layout.setVerticalGroup(
@@ -290,11 +518,11 @@ public class singleMode extends javax.swing.JFrame {
                 .addGap(37, 37, 37)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(player1)
+                        .addComponent(firstPlayer)
                         .addGap(18, 18, 18)
                         .addComponent(playerX, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(player2)
+                        .addComponent(secondPlayer)
                         .addGap(18, 18, 18)
                         .addComponent(playerO, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(72, 72, 72)
@@ -393,13 +621,13 @@ public class singleMode extends javax.swing.JFrame {
         jLabel21.setForeground(new java.awt.Color(230, 76, 60));
         jLabel21.setText("XO Game");
 
-        btnHome.setBackground(new java.awt.Color(255, 255, 255));
-        btnHome.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        btnHome.setForeground(new java.awt.Color(255, 255, 255));
-        btnHome.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/icons8-back-arrow-64.png"))); // NOI18N
-        btnHome.addActionListener(new java.awt.event.ActionListener() {
+        btnBack.setBackground(new java.awt.Color(255, 255, 255));
+        btnBack.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        btnBack.setForeground(new java.awt.Color(255, 255, 255));
+        btnBack.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/icons8-back-arrow-64.png"))); // NOI18N
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnHomeActionPerformed(evt);
+                btnBackActionPerformed(evt);
             }
         });
 
@@ -435,14 +663,14 @@ public class singleMode extends javax.swing.JFrame {
                         .addComponent(jLabel21))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(btnHome, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(59, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnHome, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(57, 57, 57)
                 .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -497,106 +725,265 @@ public class singleMode extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
-        new Modes().setVisible(true);
-        setVisible(false);
+        if(JOptionPane.showConfirmDialog(this,"confirm if you want  Exit","Tic Tak Toe" , JOptionPane.YES_NO_OPTION)==JOptionPane.YES_NO_OPTION)
+        {
+            System.exit(0);
+        }
     }//GEN-LAST:event_btnExitActionPerformed
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
-        
-
+       flag = "X";    
+        if(cx && co)
+        { 
+            
+            draw++;
+            cx = false;
+            co = false;       
+        }
+         drawCount =0;
+        for(int x = 0; x <9; x++ )
+        {
+            arr[x].setText("");
+            arr[x].setEnabled(true);
+            arr[x].setBackground(Color.LIGHT_GRAY);
+        }
+        moves.clear();
+        playerX.setText("");
+        playerO.setText("");
+      
+       
+    
     }//GEN-LAST:event_btnResetActionPerformed
 
     private void histbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_histbtnActionPerformed
-       GameRecorded g= new GameRecorded();
-       g.setVisible(true);
-        g.setLocationRelativeTo(null);
-        g.setDefaultCloseOperation(2);
+       GameRecorded s = new GameRecorded();
+        dataLocl = LocalDB.readLocalFile(localFile);
+        System.out.println("\n inside the history btn"+dataLocl+"\n");
+        s.method(localFile, dataLocl);
+        s.setVisible(true);
+        s.setDefaultCloseOperation(2);
         
     }//GEN-LAST:event_histbtnActionPerformed
 
     private void recbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recbtnActionPerformed
-        // TODO add your handling code here:
+        
+        record = true;
+       recbtn.setText("recording");
+       recbtn.setBackground(Color.GREEN);
     }//GEN-LAST:event_recbtnActionPerformed
 
     private void btn9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn9ActionPerformed
-        if (btn9.getText() == "")  {
-            btn9.setText("O");
-            turno =1;
+        String s = btn9.getText();
+            
+        if(s.equalsIgnoreCase(""))
+        {
+            
+            btn9.setText(flag);
+            moves.put(9, flag);
+             end  =xWin();
+            if((computerco<4)&&!end)
+            {
+                computerco++;
+                ComputerMode.generateRand(arr, flag, moves);
+            }
+            
+            
+            end =oWin();
+            isDrawComputer();
+           
         }
-       Computer();
+        
+       
     }//GEN-LAST:event_btn9ActionPerformed
 
     private void btn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn1ActionPerformed
-        if (btn1.getText() == "")  {
-            btn1.setText("O");
-            turno =1;
+        String s = btn1.getText();
+            
+        if(s.equalsIgnoreCase(""))
+        {
+            
+            btn1.setText(flag);
+            moves.put(1, flag);
+             end  =xWin();
+            if((computerco<4)&&!end)
+            {
+                computerco++;
+                ComputerMode.generateRand(arr, flag, moves);
+            }
+            
+            
+            end =oWin();
+            isDrawComputer();
+           
         }
-       Computer();
     }//GEN-LAST:event_btn1ActionPerformed
 
     private void btn5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn5ActionPerformed
-        if (btn5.getText() == "")  {
-            btn5.setText("O");
-            turno =1;
+        String s = btn5.getText();
+            
+        if(s.equalsIgnoreCase(""))
+        {
+            
+            btn5.setText(flag);
+            moves.put(5, flag);
+             end  =xWin();
+            if((computerco<4)&&!end)
+            {
+                computerco++;
+                ComputerMode.generateRand(arr, flag, moves);
+            }
+            
+            
+            end =oWin();
+            isDrawComputer();
+           
         }
-       Computer();
     }//GEN-LAST:event_btn5ActionPerformed
 
     private void btn2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn2ActionPerformed
-        if (btn2.getText() == "")  {
-            btn2.setText("O");
-            turno =1;
+        String s = btn2.getText();
+            
+        if(s.equalsIgnoreCase(""))
+        {
+            
+            btn2.setText(flag);
+            moves.put(2, flag);
+             end  =xWin();
+            if((computerco<4)&&!end)
+            {
+                computerco++;
+                ComputerMode.generateRand(arr, flag, moves);
+            }
+            
+            
+            end =oWin();
+            isDrawComputer();
+           
         }
-       Computer();
 
     }//GEN-LAST:event_btn2ActionPerformed
 
     private void btn6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn6ActionPerformed
-        if (btn6.getText() == "")  {
-            btn6.setText("O");
-            turno =1;
+        String s = btn6.getText();
+            
+        if(s.equalsIgnoreCase(""))
+        {
+            
+            btn6.setText(flag);
+            moves.put(6, flag);
+             end  =xWin();
+            if((computerco<4)&&!end)
+            {
+                computerco++;
+                ComputerMode.generateRand(arr, flag, moves);
+            }
+            
+            
+            end =oWin();
+            isDrawComputer();
+           
         }
-       Computer();
     }//GEN-LAST:event_btn6ActionPerformed
 
     private void btn3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn3ActionPerformed
-        if (btn3.getText() == "")  {
-            btn3.setText("O");
-            turno =1;
+        String s = btn3.getText();
+            
+        if(s.equalsIgnoreCase(""))
+        {
+            
+            btn3.setText(flag);
+            moves.put(3, flag);
+             end  =xWin();
+            if((computerco<4)&&!end)
+            {
+                computerco++;
+                ComputerMode.generateRand(arr, flag, moves);
+            }
+            
+            
+            end =oWin();
+            isDrawComputer();
+           
         }
-       Computer();
     }//GEN-LAST:event_btn3ActionPerformed
 
     private void btn8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn8ActionPerformed
-       if (btn8.getText() == "")  {
-            btn6.setText("O");
-            turno =1;
+       String s = btn8.getText();
+            
+        if(s.equalsIgnoreCase(""))
+        {
+            
+            btn8.setText(flag);
+            moves.put(8, flag);
+             end  =xWin();
+            if((computerco<4)&&!end)
+            {
+                computerco++;
+                ComputerMode.generateRand(arr, flag, moves);
+            }
+            
+            
+            end =oWin();
+            isDrawComputer();
+           
         }
-       Computer();
     }//GEN-LAST:event_btn8ActionPerformed
 
     private void btn7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn7ActionPerformed
-        if (btn7.getText() == "")  {
-            btn7.setText("O");
-            turno =1;
+        String s = btn7.getText();
+            
+        if(s.equalsIgnoreCase(""))
+        {
+            
+            btn7.setText(flag);
+            moves.put(7, flag);
+             end  =xWin();
+            if((computerco<4)&&!end)
+            {
+                computerco++;
+                ComputerMode.generateRand(arr, flag, moves);
+            }
+            
+            
+            end =oWin();
+            isDrawComputer();
+           
         }
-       Computer();
     }//GEN-LAST:event_btn7ActionPerformed
 
     private void btn4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn4ActionPerformed
-        if (btn4.getText() == "")  {
-            btn4.setText("O");
-            turno =1;
+        String s = btn4.getText();
+            
+        if(s.equalsIgnoreCase(""))
+        {
+            
+            btn4.setText(flag);
+            moves.put(4, flag);
+             end  =xWin();
+            if((computerco<4)&&!end)
+            {
+                computerco++;
+                ComputerMode.generateRand(arr, flag, moves);
+            }
+            
+            
+            end =oWin();
+            isDrawComputer();
+           
         }
-       Computer();
     }//GEN-LAST:event_btn4ActionPerformed
 
-    private void btnHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHomeActionPerformed
-        Modes m=new Modes();
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+       pWins=Profile.win;
+       System.out.println(Profile.win);
+       pWins+=xCounter;
+       pLose=Profile.lose;
+       pLose+=oCounter;
+      pGames=pWins+pLose;
+        Modes m =new Modes();
         m.setVisible(true);
-        m.setLocationRelativeTo(null);
-        setVisible(false);
-    }//GEN-LAST:event_btnHomeActionPerformed
+        m.setDefaultCloseOperation(2);
+    }//GEN-LAST:event_btnBackActionPerformed
 
     /**
      * @param args the command line arguments
@@ -644,18 +1031,18 @@ public class singleMode extends javax.swing.JFrame {
     private javax.swing.JButton btn7;
     private javax.swing.JButton btn8;
     private javax.swing.JButton btn9;
+    private javax.swing.JButton btnBack;
     private javax.swing.JButton btnExit;
-    private javax.swing.JButton btnHome;
     private javax.swing.JButton btnReset;
+    private javax.swing.JLabel firstPlayer;
     private javax.swing.JButton histbtn;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JLabel player1;
-    private javax.swing.JLabel player2;
     private javax.swing.JLabel playerO;
     private javax.swing.JLabel playerX;
     private javax.swing.JButton recbtn;
+    private javax.swing.JLabel secondPlayer;
     private javax.swing.JPanel twoplayer_mode;
     // End of variables declaration//GEN-END:variables
 }

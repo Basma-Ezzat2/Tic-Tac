@@ -25,6 +25,7 @@ public class twoPlayersMode extends javax.swing.JFrame {
     private String startGame="X";
     private int xCount = 0;
     private int oCount = 0;
+    public static int pWins,pLose,pGames;
     int draw =0;
     int drawCount=0;
     boolean cx = false;
@@ -36,7 +37,7 @@ public class twoPlayersMode extends javax.swing.JFrame {
     String winner ="";
     JButton [] arr = new JButton[9];
     LinkedHashMap<Integer, String> moves = new LinkedHashMap<>();
-    
+    Profile pr;
     
     
     public twoPlayersMode() {
@@ -118,14 +119,9 @@ public class twoPlayersMode extends javax.swing.JFrame {
             {
                 closeButtons();
                 JOptionPane.showMessageDialog(this, "the game is draw try again ");
-                Fair fair=new Fair();
-               fair.setVisible(true);
-               fair.setDefaultCloseOperation(2);
-                
-            }
-            
-        }
-        
+               
+            }           
+        }       
     }
         public boolean  xWins()
      {
@@ -684,10 +680,10 @@ public class twoPlayersMode extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
-        if(JOptionPane.showConfirmDialog(this,"confirm if you want  Exit","Tic Tak Toe" , JOptionPane.YES_NO_OPTION)==JOptionPane.YES_NO_OPTION)
+if(JOptionPane.showConfirmDialog(this,"confirm if you want  Exit","Tic Tak Toe" , JOptionPane.YES_NO_OPTION)==JOptionPane.YES_NO_OPTION)
         {
             System.exit(0);
-        }
+        }        
     }//GEN-LAST:event_btnExitActionPerformed
 
     private void histbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_histbtnActionPerformed
@@ -820,10 +816,22 @@ public class twoPlayersMode extends javax.swing.JFrame {
     }//GEN-LAST:event_btn4ActionPerformed
 
     private void btnbackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbackActionPerformed
-        Modes m=new Modes();
+        pWins=Profile.win;
+       System.out.println(Profile.win);
+       pWins+=xCount;
+      // pr.winGames.setText(""+pWins);
+       pLose=Profile.lose;
+       pLose+=oCount;
+       //Profile.loseGames.setText(""+pLose);
+       pGames=pWins+pLose;
+       
+       
+//Profile.playerGames.setText(""+pGames);  
+       //String name=Profile.profileName.getText();
+        Modes m =new Modes();
         m.setVisible(true);
-        m.setLocationRelativeTo(null);
-        setVisible(false);
+        m.setDefaultCloseOperation(2);
+        //m.setVisible(false);
     }//GEN-LAST:event_btnbackActionPerformed
 
     private void recbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recbtnActionPerformed
@@ -910,8 +918,8 @@ public class twoPlayersMode extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel player1;
     private javax.swing.JLabel player2;
-    private javax.swing.JLabel playerO;
-    private javax.swing.JLabel playerX;
+    public static javax.swing.JLabel playerO;
+    public static javax.swing.JLabel playerX;
     private javax.swing.JButton recbtn;
     private javax.swing.JPanel twoplayer_mode;
     // End of variables declaration//GEN-END:variables

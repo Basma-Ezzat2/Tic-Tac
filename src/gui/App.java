@@ -15,7 +15,7 @@ public class App {
     public static void main(String[] args) throws Exception {
         //new GamePanel();
        /* new Welcome().setVisible(true);*/
-      // splash_screen screen = new splash_screen();
+      new splash_screen();
        /* Welcome sign = new Welcome();*/
         
         

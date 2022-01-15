@@ -5,7 +5,15 @@
  */
 package clientBaseClass;
 
+import gui.GameRecorded;
+import gui.LocalDB;
+import static gui.LocalDB.readLocalFile;
+import gui.Loser;
 import gui.Modes;
+import gui.Winner;
+import static gui.singleMode.dataLocl;
+import static gui.singleMode.localFile;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.DataInputStream;
@@ -28,13 +36,14 @@ public class OnlineTest extends javax.swing.JFrame {
     /**
      * Creates new form OnlineTest
      */
-    
+    boolean record = false;
     ArrayList<JButton> buttons;
     ClientBaseClass clientBase;
     public OnlineTest() {
         initComponents();
         twoplayer_mode.setVisible(false);
         buttons = new ArrayList<>(Arrays.asList(new JButton[]{btn1,btn2,btn3,btn4,btn5,btn6,btn7,btn8,btn9}));
+     
         clientBase=new ClientBaseClass(buttons){
             @Override
             public void onLetsPlay() {
@@ -46,12 +55,18 @@ public class OnlineTest extends javax.swing.JFrame {
             public void onWin() {
                 super.onWin(); //To change body of generated methods, choose Tools | Templates.
                 JOptionPane.showMessageDialog(null, "YOU WIN ");
+                Winner wins=new Winner();
+               wins.setVisible(true);
+               wins.setDefaultCloseOperation(2);
             }
 
             @Override
             public void onLose() {
                 super.onLose(); //To change body of generated methods, choose Tools | Templates.
                  JOptionPane.showMessageDialog(null, "YOU LOSE ");
+                 Loser lose=new Loser();
+                lose.setVisible(true);
+               lose.setDefaultCloseOperation(2);
             }
 
             @Override
@@ -90,8 +105,6 @@ public class OnlineTest extends javax.swing.JFrame {
         playerO = new javax.swing.JLabel();
         btnExit = new javax.swing.JButton();
         btnReset = new javax.swing.JButton();
-        histbtn = new javax.swing.JButton();
-        recbtn = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         btn9 = new javax.swing.JButton();
         btn1 = new javax.swing.JButton();
@@ -146,26 +159,6 @@ public class OnlineTest extends javax.swing.JFrame {
             }
         });
 
-        histbtn.setBackground(new java.awt.Color(48, 57, 82));
-        histbtn.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        histbtn.setForeground(new java.awt.Color(255, 255, 255));
-        histbtn.setText("History");
-        histbtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                histbtnActionPerformed(evt);
-            }
-        });
-
-        recbtn.setBackground(new java.awt.Color(230, 76, 60));
-        recbtn.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        recbtn.setForeground(new java.awt.Color(255, 255, 255));
-        recbtn.setText("Rec..");
-        recbtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                recbtnActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -181,13 +174,8 @@ public class OnlineTest extends javax.swing.JFrame {
                     .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(29, 29, 29))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(recbtn)
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(93, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(histbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnReset, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(90, 90, 90))
@@ -195,9 +183,7 @@ public class OnlineTest extends javax.swing.JFrame {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(recbtn)
-                .addGap(57, 57, 57)
+                .addGap(99, 99, 99)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel25)
                     .addComponent(jLabel23))
@@ -209,9 +195,7 @@ public class OnlineTest extends javax.swing.JFrame {
                 .addComponent(btnReset, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(histbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(73, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel1.setBackground(new java.awt.Color(48, 57, 82));
@@ -326,7 +310,7 @@ public class OnlineTest extends javax.swing.JFrame {
                     .addComponent(btn8, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn7, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn9, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 48, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout twoplayer_modeLayout = new javax.swing.GroupLayout(twoplayer_mode);
@@ -359,25 +343,15 @@ public class OnlineTest extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
  
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
-       /* new Modes().setVisible(true);
-        setVisible(false);*/
+      if(JOptionPane.showConfirmDialog(this,"confirm if you want  Exit","Tic Tak Toe" , JOptionPane.YES_NO_OPTION)==JOptionPane.YES_NO_OPTION)
+        {
+            System.exit(0);
+        }
     }//GEN-LAST:event_btnExitActionPerformed
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
 
     }//GEN-LAST:event_btnResetActionPerformed
-
-    private void histbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_histbtnActionPerformed
-        /*GameRecorded g= new GameRecorded();
-        g.setVisible(true);
-        g.setLocationRelativeTo(null);
-        g.setDefaultCloseOperation(2);*/
-
-    }//GEN-LAST:event_histbtnActionPerformed
-
-    private void recbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recbtnActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_recbtnActionPerformed
 
     private void btnbackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbackActionPerformed
         Modes m=new Modes();
@@ -435,7 +409,6 @@ public class OnlineTest extends javax.swing.JFrame {
     private javax.swing.JButton btnExit;
     private javax.swing.JButton btnReset;
     private javax.swing.JButton btnback;
-    private javax.swing.JButton histbtn;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel25;
@@ -443,7 +416,6 @@ public class OnlineTest extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel playerO;
     private javax.swing.JLabel playerX;
-    private javax.swing.JButton recbtn;
     private javax.swing.JPanel twoplayer_mode;
     // End of variables declaration//GEN-END:variables
 }

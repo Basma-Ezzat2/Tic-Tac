@@ -22,6 +22,7 @@ import javax.swing.JOptionPane;
 public class Registeration extends javax.swing.JFrame {
 
     String confirm, pass;
+    Profile pr;
     
      Connection con= null;
     PreparedStatement stmt= null;
@@ -56,7 +57,7 @@ public class Registeration extends javax.swing.JFrame {
         jSeparator4 = new javax.swing.JSeparator();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        usernamTextField = new javax.swing.JTextField();
+        registerName = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -143,13 +144,13 @@ public class Registeration extends javax.swing.JFrame {
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/icons8-name-30.png"))); // NOI18N
         jLabel6.setText("Name");
 
-        usernamTextField.setBackground(new java.awt.Color(231, 76, 60));
-        usernamTextField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        usernamTextField.setForeground(new java.awt.Color(255, 255, 255));
-        usernamTextField.setBorder(null);
-        usernamTextField.addActionListener(new java.awt.event.ActionListener() {
+        registerName.setBackground(new java.awt.Color(231, 76, 60));
+        registerName.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        registerName.setForeground(new java.awt.Color(255, 255, 255));
+        registerName.setBorder(null);
+        registerName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                usernamTextFieldActionPerformed(evt);
+                registerNameActionPerformed(evt);
             }
         });
 
@@ -176,7 +177,7 @@ public class Registeration extends javax.swing.JFrame {
                                 .addGap(59, 59, 59)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(usernamTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(registerName, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel5)
@@ -213,7 +214,7 @@ public class Registeration extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
-                    .addComponent(usernamTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(registerName, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(19, 19, 19)
@@ -276,9 +277,7 @@ public class Registeration extends javax.swing.JFrame {
     private void cancelbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelbtnActionPerformed
            Welcome w=new Welcome();
         w.setLocationRelativeTo(null);
-        w.setVisible(true);
-            
-        
+        w.setVisible(true);       
     }//GEN-LAST:event_cancelbtnActionPerformed
 
     private void registerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerActionPerformed
@@ -288,14 +287,17 @@ public class Registeration extends javax.swing.JFrame {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             java.sql.Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/tic_tac" , "root" , "");
-            String query =  "INSERT INTO users VALUES (?,?,?)";
+            String query =  "INSERT INTO users VALUES (?,?,?,?,?,?)";
 
             PreparedStatement stmt = con.prepareStatement(query);
             stmt.setString(1, nameTextField.getText());
-            stmt.setString(2, usernamTextField.getText());
+            stmt.setString(2, registerName.getText());
             stmt.setString(3, passwordField.getText());
+            stmt.setInt(4,0);
+            stmt.setInt(5,0);
+            stmt.setInt(6,0);
             //ResultSet res = stmt.executeQuery();
-            if(nameTextField.getText().equals("")|| usernamTextField.getText().equals("")|| passwordField.getText().equals("")|| confirmpasswordField.getText().equals("")){
+            if(nameTextField.getText().equals("")|| registerName.getText().equals("")|| passwordField.getText().equals("")|| confirmpasswordField.getText().equals("")){
                     JOptionPane.showMessageDialog(null, "Missing Data!"); 
             }else if(!confirm.equals(pass))
                     {
@@ -303,12 +305,15 @@ public class Registeration extends javax.swing.JFrame {
                     }
             else{
                 try {
-                    stmt.executeUpdate();
+                    stmt.executeUpdate();     
+                           
                     JOptionPane.showMessageDialog(this, "Registered Succesfully");
+                     
                Modes m= new Modes();
                        m.setVisible(true);        
                 m.setLocationRelativeTo(null);
-                m.setVisible(false);
+                pr.getUserInfo(registerName.getText());
+                //m.setVisible(false);
                 } catch (SQLException ex) {
                     Logger.getLogger(Registeration.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -325,9 +330,9 @@ public class Registeration extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_confirmpasswordFieldActionPerformed
 
-    private void usernamTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usernamTextFieldActionPerformed
+    private void registerNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerNameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_usernamTextFieldActionPerformed
+    }//GEN-LAST:event_registerNameActionPerformed
 
     private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordFieldActionPerformed
         // TODO add your handling code here:
@@ -386,7 +391,7 @@ public class Registeration extends javax.swing.JFrame {
     private javax.swing.JTextField nameTextField;
     private javax.swing.JPasswordField passwordField;
     private javax.swing.JButton register;
-    private javax.swing.JTextField usernamTextField;
+    public static javax.swing.JTextField registerName;
     // End of variables declaration//GEN-END:variables
 }
 /*
