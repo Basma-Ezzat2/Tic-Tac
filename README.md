@@ -30,6 +30,8 @@
 * Two players
 ![WhatsApp Image 2022-01-15 at 2 18 00 AM](https://user-images.githubusercontent.com/96724284/149601835-d6cb026e-d7c0-4fce-8977-b2823490b501.jpeg) 
 * User profile
+
+
 ![WhatsApp Image 2022-01-15 at 2 56 10 AM](https://user-images.githubusercontent.com/96724284/149602595-f3b863f7-9ba8-4c68-a0e8-5e15be83cea4.jpeg)
 * Game history
 ![WhatsApp Image 2022-01-15 at 2 55 56 AM](https://user-images.githubusercontent.com/96724284/149602780-a60329ab-a948-46ec-a7e8-b63228634330.jpeg)
