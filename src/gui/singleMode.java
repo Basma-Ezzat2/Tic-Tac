@@ -110,8 +110,8 @@ public class singleMode extends javax.swing.JFrame {
            
             System.out.println("inside");
             LocalDB.fillMap(moves, arr);
-           recbtn.setText("record game");
-           recbtn.setBackground(Color.LIGHT_GRAY);
+           //recbtn.setText("record game");
+           //recbtn.setBackground(Color.LIGHT_GRAY);
             record = false;
             dataLocl = LocalDB.readLocalFile(localFile);
             System.out.println(dataLocl+"the line inside recordGame");
@@ -405,7 +405,6 @@ public class singleMode extends javax.swing.JFrame {
         btnExit = new javax.swing.JButton();
         btnReset = new javax.swing.JButton();
         histbtn = new javax.swing.JButton();
-        recbtn = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         btn9 = new javax.swing.JButton();
         btn1 = new javax.swing.JButton();
@@ -471,34 +470,17 @@ public class singleMode extends javax.swing.JFrame {
             }
         });
 
-        recbtn.setBackground(new java.awt.Color(230, 76, 60));
-        recbtn.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        recbtn.setForeground(new java.awt.Color(255, 255, 255));
-        recbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/icons8-record-button-for-computer-application-program-layout-24.png"))); // NOI18N
-        recbtn.setText("Rec..");
-        recbtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                recbtnActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(124, 124, 124)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(histbtn, javax.swing.GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
-                            .addComponent(btnReset, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnExit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(0, 99, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(recbtn)))
-                .addContainerGap())
+                .addGap(124, 124, 124)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(histbtn, javax.swing.GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
+                    .addComponent(btnReset, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnExit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(109, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGap(75, 75, 75)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -513,9 +495,7 @@ public class singleMode extends javax.swing.JFrame {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(recbtn)
-                .addGap(37, 37, 37)
+                .addGap(81, 81, 81)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(firstPlayer)
@@ -764,13 +744,6 @@ public class singleMode extends javax.swing.JFrame {
         s.setDefaultCloseOperation(2);
         
     }//GEN-LAST:event_histbtnActionPerformed
-
-    private void recbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recbtnActionPerformed
-        
-        record = true;
-       recbtn.setText("recording");
-       recbtn.setBackground(Color.GREEN);
-    }//GEN-LAST:event_recbtnActionPerformed
 
     private void btn9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn9ActionPerformed
         String s = btn9.getText();
@@ -1041,7 +1014,6 @@ public class singleMode extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel playerO;
     private javax.swing.JLabel playerX;
-    private javax.swing.JButton recbtn;
     private javax.swing.JLabel secondPlayer;
     private javax.swing.JPanel twoplayer_mode;
     // End of variables declaration//GEN-END:variables

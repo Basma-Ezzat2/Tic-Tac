@@ -190,7 +190,7 @@ public class Modes extends javax.swing.JFrame {
       OnlineTest o=new OnlineTest();
       o.setVisible(true);
       o.setLocationRelativeTo(null);
-               setVisible(false);
+               //setVisible(false);
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jLabel3MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MousePressed
